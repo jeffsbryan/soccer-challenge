@@ -1,30 +1,16 @@
-    <!-- title -->
-    <span class="title">Challenge of the Day: Run Forrest Run</span>
-    <!-- Coaches instructions -->
-    <div class="instructions">
-        <br>
-        This is for total time <br><br>
-        <ul>
-          <li>1 mile run</li>
-          <li>50 juggles ( doesn’t need to be consecutive for example you could do 5 juggles 8 times)</li>
-          <li>30 scissors &nbsp; <a ref="https://youtu.be/5vENehfAMTc" >See video on scissors move</a></li>
-          <li>10 burpees</li>
-          <li>1 mile run</li>
-         </ul>
-
-
-         <mat-form-field>
-           <input matInput placeholder="Favorite food" value="Sushi">
-         </mat-form-field>
-
-    </div>
-    <br>
-
-    <!-- Player logs submission  -->
-    <button mat-raised-button>Log Your Work</button>
-
-    <!-- Video of Day (VOD) -->
-    <video width="450" height="440" controls>
-       <source src="https://soccer-challenge-2020.s3.amazonaws.com/vod/SampleVideo_1280x720_2mb.mp4" type="video/mp4">
-    </video>
-
+<mat-accordion multi="true" *ngIf="workouts.length > 0">
+  <mat-expansion-panel *ngFor="let workout of workouts">
+    <mat-expansion-panel-header>
+      {{ workout.title }}
+    </mat-expansion-panel-header>
+    <p>{{ workout.description }}</p>
+    <p>{{ workout.dateOfWorkout }}</p>
+    <mat-action-row>
+      <button mat-button color="primary">EDIT</button>
+      <button mat-button color="warn">DELETE</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>
+<p class="info-text mat-body-1" *ngIf="workouts.length <= 0">
+  No workouts added yet!
+</p>

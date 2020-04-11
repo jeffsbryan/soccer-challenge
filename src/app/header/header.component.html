@@ -1,7 +1,28 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <span><a mat-button routerLink="/create" routerLinkActive="mat-accent">Create</a></span>
+    <span
+      ><a mat-button routerLink="/" routerLinkActive="mat-accent"
+        >My Workouts</a
+      ></span
+    >
     <span class="spacer"></span>
-    <span><a routerLink="/">List</a></span>
+    <span
+      ><a mat-button routerLink="/createWorkout" routerLinkActive="mat-accent"
+        >Create</a
+      ></span
+    >
+  </mat-toolbar-row>
+  <mat-toolbar-row>
+    <span
+      ><a mat-button routerLink="/wod" routerLinkActive="mat-accent"
+        >WOD</a
+      ></span
+    >
+    <span class="spacer"></span>
+    <span
+      ><a mat-button routerLink="/wodList" routerLinkActive="mat-accent"
+        >WOD Results</a
+      ></span
+    >
   </mat-toolbar-row>
 </mat-toolbar>

@@ -1,0 +1,94 @@
+@import '~@angular/material/theming';
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+
+$md-crushpalette: (
+    50 : #fcf2e7,
+    100 : #f8dec3,
+    200 : #f3c89c,
+    300 : #eeb274,
+    400 : #eaa256,
+    500 : #e69138,
+    600 : #e38932,
+    700 : #df7e2b,
+    800 : #db7424,
+    900 : #d56217,
+    A100 : #ffffff,
+    A200 : #ffe3d4,
+    A400 : #ffc3a1,
+    A700 : #ffb287,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #000000,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+
+$md-silverpalette: (
+    50 : #f9f9f9,
+    100 : #eff0f1,
+    200 : #e5e6e8,
+    300 : #dadcde,
+    400 : #d2d5d7,
+    500 : #cacdd0,
+    600 : #c5c8cb,
+    700 : #bdc1c4,
+    800 : #b7babe,
+    900 : #abaeb3,
+    A100 : #ffffff,
+    A200 : #ffffff,
+    A400 : #feffff,
+    A700 : #e5f0ff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #000000,
+        900 : #000000,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$rebels-app-primary: mat-palette($md-crushpalette);
+$rebels-app-accent:  mat-palette($md-silverpalette);
+
+// The warn palette is optional (defaults to red).
+$rebels-app-warn:    mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$rebels-app-theme: mat-light-theme($rebels-app-primary, $rebels-app-accent, $rebels-app-warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($rebels-app-theme);

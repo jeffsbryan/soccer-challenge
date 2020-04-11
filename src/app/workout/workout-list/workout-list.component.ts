@@ -1,15 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Subscription } from "rxjs";
+
+import { Workout } from "../workout.model";
+import { WorkoutService } from "../workout.service";
 
 @Component({
-  selector: 'app-workout',
-  templateUrl: './workout-list.component.html',
-  styleUrls: ['./workout-list.component.css']
+  selector: "app-workout",
+  templateUrl: "./workout-list.component.html",
+  styleUrls: ["./workout-list.component.css"]
 })
 export class WorkoutListComponent implements OnInit {
+  workouts: Workout[] = [];
+  private workoutSub: Subscription;
 
-  constructor() { }
+  constructor(public workoutService: WorkoutService) {}
 
   ngOnInit() {
+    this.workouts = this.workoutService.getWorkouts();
+    this.workoutSub = this.workoutService
+      .getWorkoutUpdateListener()
+      .subscribe((workouts: Workout[]) => {
+        this.workouts = workouts;
+      });
   }
 
+  ngOnDestroy() {
+    this.workoutSub.unsubscribe();
+  }
 }

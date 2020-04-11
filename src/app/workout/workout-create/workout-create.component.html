@@ -21,14 +21,43 @@
         required
         ngModel
         placeholder="Description of Workout"
+        #description="ngModel"
       />
+      <mat-error *ngIf="description.invalid"
+        >Enter a description and the details of the workout.</mat-error
+      >
     </mat-form-field>
     <mat-form-field>
       <mat-label>Choose a date</mat-label>
-      <input matInput [matDatepicker]="picker" />
+      <input
+        matInput
+        required
+        [matDatepicker]="picker"
+        [value]="date.value"
+        ngModel
+        name="workoutDate"
+        #workoutDate="ngModel"
+      />
+      <mat-error *ngIf="workoutDate.invalid"
+        >Enter the date of the workout.</mat-error
+      >
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
+    <div>
+      <mat-label>Upload a video file</mat-label>
+      <button
+        type="button"
+        mat-button
+        color="warn"
+        (click)="filePicker.click()"
+      >
+        <mat-icon>file_upload</mat-icon>
+        Upload
+      </button>
+      <input type="file" #filePicker />
+    </div>
+
     <button mat-raised-button color="accent" type="submit">Save Workout</button>
   </form>
 </mat-card>

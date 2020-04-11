@@ -1,30 +1,35 @@
-import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { Workout } from '../workout.model';
+import { Component, OnInit } from "@angular/core";
+import { NgForm } from "@angular/forms";
+import { FormControl } from "@angular/forms";
+import { Workout } from "../workout.model";
+import { WorkoutService } from "../workout.service";
 
 @Component({
-  selector: 'app-workout',
-  templateUrl: './workout-create.component.html',
-  styleUrls: ['./workout-create.component.css']
+  selector: "app-workout",
+  templateUrl: "./workout-create.component.html",
+  styleUrls: ["./workout-create.component.css"]
 })
 export class WorkoutCreateComponent implements OnInit {
+  date = new FormControl(new Date());
+  constructor(public workoutService: WorkoutService) {}
 
-   title='Some Title'
-  constructor() { }
+  ngOnInit() {}
 
-  ngOnInit() {
-  }
-
-  onCreateWorkout(form:NgForm) {
-
+  onCreateWorkout(form: NgForm) {
     if (form.invalid) {
       return;
     }
 
-    const workout : Workout = {
-      title : form.value.title,
-      description : form.value.description
+    if (form.invalid) {
+      return;
     }
+    this.workoutService.addWorkout(
+      form.value.title,
+      form.value.description,
+      form.value.workoutDate
+    );
+    form.resetForm();
   }
 
+  onFileUploadClick() {}
 }

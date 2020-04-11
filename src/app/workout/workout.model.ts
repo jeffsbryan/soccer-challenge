@@ -1,4 +1,5 @@
 export interface Workout {
-  title: string
-  description: string
+  title: string;
+  description: string;
+  dateOfWorkout: Date;
 }
