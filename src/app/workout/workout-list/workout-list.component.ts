@@ -7,7 +7,7 @@ import { WorkoutService } from "../workout.service";
 @Component({
   selector: "app-workout",
   templateUrl: "./workout-list.component.html",
-  styleUrls: ["./workout-list.component.css"]
+  styleUrls: ["./workout-list.component.css"],
 })
 export class WorkoutListComponent implements OnInit {
   workouts: Workout[] = [];
@@ -16,7 +16,7 @@ export class WorkoutListComponent implements OnInit {
   constructor(public workoutService: WorkoutService) {}
 
   ngOnInit() {
-    this.workouts = this.workoutService.getWorkouts();
+    this.workoutService.getWorkouts();
     this.workoutSub = this.workoutService
       .getWorkoutUpdateListener()
       .subscribe((workouts: Workout[]) => {
