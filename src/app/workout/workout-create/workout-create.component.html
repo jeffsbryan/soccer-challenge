@@ -6,7 +6,7 @@
         type="text"
         name="title"
         required
-        ngModel
+        [ngModel]="workout?.title"
         minlength="3"
         placeholder="Title of Workout"
         #title="ngModel"
@@ -14,15 +14,16 @@
       <mat-error *ngIf="title.invalid">Enter a workout title.</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input
+      <textarea
+        rows="5"
         matInput
         type="text"
         name="description"
         required
-        ngModel
+        [ngModel]="workout?.description"
         placeholder="Description of Workout"
         #description="ngModel"
-      />
+      ></textarea>
       <mat-error *ngIf="description.invalid"
         >Enter a description and the details of the workout.</mat-error
       >
@@ -34,7 +35,7 @@
         required
         [matDatepicker]="picker"
         [value]="date.value"
-        ngModel
+        [ngModel]="workout?.dateOfWorkout"
         name="workoutDate"
         #workoutDate="ngModel"
       />

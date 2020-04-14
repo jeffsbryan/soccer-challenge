@@ -24,6 +24,10 @@ export class WorkoutListComponent implements OnInit {
       });
   }
 
+  onDelete(workoutId: string) {
+    this.workoutService.deleteWorkout(workoutId);
+  }
+
   ngOnDestroy() {
     this.workoutSub.unsubscribe();
   }

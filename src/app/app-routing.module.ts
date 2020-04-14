@@ -11,11 +11,12 @@ const routes: Routes = [
   { path: "wodList", component: WodListComponent },
   { path: "wodPost", component: WodPostComponent },
   { path: "createWorkout", component: WorkoutCreateComponent },
-  { path: "", component: WorkoutListComponent }
+  { path: "editWorkout/:workoutId", component: WorkoutCreateComponent },
+  { path: "", component: WorkoutListComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

@@ -1,7 +1,19 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-
 const app = express();
+const mongoose = require("mongoose");
+const Workout = require("./models/workout");
+
+mongoose
+  .connect(
+    "mongodb+srv://rebelsadmin:funvegan2020@cluster0-ufmw4.mongodb.net/test?retryWrites=true&w=majority"
+  )
+  .then(() => {
+    console.log("Connected to database!");
+  })
+  .catch(() => {
+    console.log("Connection failed!");
+  });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -20,27 +32,42 @@ app.use((req, res, next) => {
 });
 
 app.post("/api/workouts", (req, res, next) => {
-  const post = req.body;
-  console.log(post);
+  const workout = new Workout({
+    title: req.body.title,
+    description: req.body.description,
+    dateOfWorkout: req.body.dateOfWorkout,
+  });
+
+  workout.save();
+
   res.status(201).json({
     message: "Workout added successfully",
   });
 });
 
 app.get("/api/workouts", (req, res, next) => {
-  const workouts = [
-    {
-      title: "First Workout",
-      description: "This is coming from the server",
-    },
-    {
-      title: "Second Workout",
-      description: "This is coming from the server!",
-    },
-  ];
-  res.status(200).json({
-    message: "Workouts fetched successfully!",
-    workouts: workouts,
+  Workout.find().then((documents) => {
+    res.status(200).json({
+      message: "Workouts fetched successfully!",
+      workouts: documents,
+    });
+  });
+});
+
+app.get("/api/workouts/:id", (req, res, next) => {
+  Workout.findById(req.params.id).then((document) => {
+    if (document) {
+      res.status(200).json(document);
+    } else {
+      res.status(404).json({ message: "Workout not found!" });
+    }
+  });
+});
+
+app.delete("/api/workouts/:id", (req, res, next) => {
+  Workout.deleteOne({ _id: req.params.id }).then((result) => {
+    console.log(result);
+    res.status(200).json({ message: "Workout deleted!" });
   });
 });
 
