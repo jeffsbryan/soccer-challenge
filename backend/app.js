@@ -54,6 +54,29 @@ app.get("/api/workouts", (req, res, next) => {
   });
 });
 
+app.get("/api/workouts/wod", (req, res, next) => {
+  console.log("Getting workout " + req.query.workoutDate);
+
+  let startOfDay = new Date(req.query.workoutDate);
+  startOfDay.setHours(0, 0, 0);
+  let endDate = new Date();
+  endDate.setDate(startOfDay.getDate() + 1);
+  //new Date("2020-04-16")
+  Workout.find({
+    dateOfWorkout: { $gte: startOfDay, $lt: endDate },
+  })
+    .limit(1)
+    .then((document) => {
+      if (!document.length) {
+        console.log("WOD not found!!");
+        res.status(404).json({ message: "Workout not found!" });
+      } else {
+        console.log("WOD found!!");
+        res.status(200).json(document);
+      }
+    });
+});
+
 app.get("/api/workouts/:id", (req, res, next) => {
   Workout.findById(req.params.id).then((document) => {
     if (document) {

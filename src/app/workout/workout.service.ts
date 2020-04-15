@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Subject } from "rxjs";
 import { map } from "rxjs/operators";
 
@@ -35,6 +35,18 @@ export class WorkoutService {
       });
   }
 
+  getWorkoutByDay(workoutDate: Date) {
+    let params = new HttpParams().set(
+      "workoutDate",
+      workoutDate.toDateString()
+    );
+    return this.http.get<{
+      _id: string;
+      title: string;
+      description: string;
+      dateOfWorkout: Date;
+    }>("http://localhost:3000/api/workouts/wod", { params: params });
+  }
   getWorkout(id: string) {
     return this.http.get<{
       _id: string;

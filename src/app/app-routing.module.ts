@@ -9,7 +9,7 @@ import { WorkoutListComponent } from "./workout/workout-list/workout-list.compon
 const routes: Routes = [
   { path: "wod", component: WodComponent },
   { path: "wodList", component: WodListComponent },
-  { path: "wodPost", component: WodPostComponent },
+  { path: "logWodResult/:workoutId", component: WodPostComponent },
   { path: "createWorkout", component: WorkoutCreateComponent },
   { path: "editWorkout/:workoutId", component: WorkoutCreateComponent },
   { path: "", component: WorkoutListComponent },
