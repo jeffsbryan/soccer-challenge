@@ -3,8 +3,12 @@
     <mat-expansion-panel-header>
       {{ workout.title }}
     </mat-expansion-panel-header>
-    <p>{{ workout.description }}</p>
-    <p>{{ workout.dateOfWorkout }}</p>
+    <span style="white-space: pre-wrap;">
+      <p>
+        {{ workout.dateOfWorkout }}
+      </p>
+      <p>{{ workout.description }}</p>
+    </span>
     <mat-action-row>
       <a mat-button color="primary" [routerLink]="['/editWorkout', workout.id]"
         >EDIT</a

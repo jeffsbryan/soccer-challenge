@@ -1,1 +1,24 @@
-<p>Log your WOD Result here!</p>
+<mat-card>
+  <form (submit)="onSaveWodResult(wodForm)" #wodForm="ngForm">
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        name="result"
+        required
+        minlength="1"
+        placeholder="Enter results"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <textarea
+        rows="5"
+        matInput
+        type="text"
+        name="comment"
+        placeholder="Enter comments"
+      ></textarea>
+    </mat-form-field>
+    <button mat-raised-button color="accent" type="submit">Submit</button>
+  </form>
+</mat-card>

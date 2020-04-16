@@ -1,13 +1,25 @@
-<p>{{ workout?.title }}</p>
-<p>{{ workout?.description }}</p>
-<p>{{ workout?.dateOfWorkout }}</p>
-
-<mat-action-row *ngIf="workout">
-  <a mat-button color="primary" [routerLink]="['/logWodResult', workout.id]"
-    >Submit Result</a
-  >
-</mat-action-row>
-
-<p class="info-text mat-body-1" *ngIf="noWorkoutFound">
-  No workout created for today!
-</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>{{ workout?.title }}</mat-card-title>
+    <mat-card-subtitle>{{ workout?.dateOfWorkout }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <span style="white-space: pre-wrap;">
+      {{ workout?.description }}
+    </span>
+    <p class="info-text mat-body-1" *ngIf="noWorkoutFound">
+      No workout created for today!
+    </p>
+  </mat-card-content>
+  <mat-card-actions>
+    <mat-action-row *ngIf="workout">
+      <button
+        color="primary"
+        mat-button
+        [routerLink]="['/logWodResult', workout.id]"
+      >
+        Log Result
+      </button>
+    </mat-action-row>
+  </mat-card-actions>
+</mat-card>
