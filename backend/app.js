@@ -26,7 +26,7 @@ app.use((req, res, next) => {
   );
   res.setHeader(
     "Access-Control-Allow-Methods",
-    "GET, POST, PATCH, DELETE, OPTIONS"
+    "GET, POST, PUT, PATCH, DELETE, OPTIONS"
   );
   next();
 });
@@ -37,11 +37,23 @@ app.post("/api/workouts", (req, res, next) => {
     description: req.body.description,
     dateOfWorkout: req.body.dateOfWorkout,
   });
-
   workout.save();
 
   res.status(201).json({
     message: "Workout added successfully",
+  });
+});
+
+app.put("/api/workouts/:id", (req, res, next) => {
+  const workout = new Workout({
+    _id: req.body.id,
+    title: req.body.title,
+    description: req.body.description,
+    dateOfWorkout: req.body.dateOfWorkout,
+  });
+  console.log(workout);
+  Workout.updateOne({ _id: req.params.id }, workout).then((result) => {
+    res.status(200).json({ message: "Update successful!" });
   });
 });
 

@@ -61,9 +61,6 @@ export class WorkoutService {
   }
 
   addWorkout(title: string, description: string, dateOfWorkout: Date) {
-    console.log("title: " + title + ", description: " + description);
-    console.log("dateOfWorkout: " + dateOfWorkout);
-
     const workout: Workout = {
       id: null,
       title: title,
@@ -80,6 +77,35 @@ export class WorkoutService {
         const id = responseData.workoutId;
         workout.id = id;
         this.workouts.push(workout);
+        this.workoutsUpdated.next([...this.workouts]);
+      });
+  }
+  updateWorkout(
+    id: string,
+    title: string,
+    description: string,
+    dateOfWorkout: Date
+  ) {
+    const workout: Workout = {
+      id: id,
+      title: title,
+      description: description,
+      dateOfWorkout: dateOfWorkout,
+    };
+
+    this.http
+      .put("http://localhost:3000/api/workouts/" + id, workout)
+      .subscribe((response) => {
+        const updatedWorkouts = [...this.workouts];
+        const oldWorkoutIndex = updatedWorkouts.findIndex((p) => p.id === id);
+        const workout: Workout = {
+          id: id,
+          title: title,
+          description: description,
+          dateOfWorkout: dateOfWorkout,
+        };
+        updatedWorkouts[oldWorkoutIndex] = workout;
+        this.workouts = updatedWorkouts;
         this.workoutsUpdated.next([...this.workouts]);
       });
   }

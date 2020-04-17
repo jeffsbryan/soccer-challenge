@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { NgForm } from "@angular/forms";
+import { FormGroup, Validators } from "@angular/forms";
+import { FormControl } from "@angular/forms";
 
 @Component({
   selector: "app-wod-post",
@@ -7,15 +8,24 @@ import { NgForm } from "@angular/forms";
   styleUrls: ["./wod-post.component.css"],
 })
 export class WodPostComponent implements OnInit {
+  form: FormGroup;
+
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.form = new FormGroup({
+      result: new FormControl(null, {
+        validators: [Validators.required, Validators.minLength(3)],
+      }),
+      comment: new FormControl(null),
+    });
+  }
 
-  onSaveWodResult(form: NgForm) {
-    if (form.invalid) {
+  onSaveWodResult() {
+    if (this.form.invalid) {
       return;
     }
     //this.workoutService.addWodResult(form.value.result, form.value.comment);
-    form.resetForm();
+    this.form.reset();
   }
 }

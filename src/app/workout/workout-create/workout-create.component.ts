@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { NgForm } from "@angular/forms";
+import { FormGroup, Validators } from "@angular/forms";
 import { FormControl } from "@angular/forms";
 import { WorkoutService } from "../workout.service";
 import { ActivatedRoute, ParamMap } from "@angular/router";
@@ -13,8 +13,8 @@ import { Workout } from "../workout.model";
 export class WorkoutCreateComponent implements OnInit {
   private mode = "create";
   private workoutId: string;
+  form: FormGroup;
   workout: Workout;
-  date = new FormControl(new Date());
 
   constructor(
     public workoutService: WorkoutService,
@@ -22,6 +22,21 @@ export class WorkoutCreateComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    const tomorrow = new Date();
+    tomorrow.setDate(new Date().getDate() + 1);
+    tomorrow.setHours(0, 0, 0);
+
+    this.form = new FormGroup({
+      title: new FormControl(null, {
+        validators: [Validators.required, Validators.minLength(3)],
+      }),
+      description: new FormControl(null, {
+        validators: [Validators.required],
+      }),
+      workoutDate: new FormControl(tomorrow, {
+        validators: [Validators.required],
+      }),
+    });
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has("workoutId")) {
         this.mode = "edit";
@@ -35,6 +50,11 @@ export class WorkoutCreateComponent implements OnInit {
               description: workoutData.description,
               dateOfWorkout: workoutData.dateOfWorkout,
             };
+            this.form.setValue({
+              title: this.workout.title,
+              description: this.workout.description,
+              workoutDate: this.workout.dateOfWorkout,
+            });
           });
       } else {
         this.mode = "create";
@@ -43,17 +63,25 @@ export class WorkoutCreateComponent implements OnInit {
     });
   }
 
-  onCreateWorkout(form: NgForm) {
-    if (form.invalid) {
+  onCreateWorkout() {
+    if (this.form.invalid) {
       return;
     }
-    this.workoutService.addWorkout(
-      form.value.title,
-      form.value.description,
-      form.value.workoutDate
-    );
-    form.resetForm();
+    if (this.mode === "create") {
+      this.workoutService.addWorkout(
+        this.form.value.title,
+        this.form.value.description,
+        this.form.value.workoutDate
+      );
+    } else {
+      this.workoutService.updateWorkout(
+        this.workoutId,
+        this.form.value.title,
+        this.form.value.description,
+        this.form.value.workoutDate
+      );
+    }
+    this.form.reset();
   }
-
   onFileUploadClick() {}
 }

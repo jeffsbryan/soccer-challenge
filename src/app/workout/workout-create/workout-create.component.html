@@ -1,45 +1,32 @@
 <mat-card>
-  <form (submit)="onCreateWorkout(workoutForm)" #workoutForm="ngForm">
+  <form [formGroup]="form" (submit)="onCreateWorkout()">
     <mat-form-field>
       <input
         matInput
         type="text"
-        name="title"
-        required
-        [ngModel]="workout?.title"
-        minlength="3"
+        formControlName="title"
         placeholder="Title of Workout"
-        #title="ngModel"
       />
-      <mat-error *ngIf="title.invalid">Enter a workout title.</mat-error>
+      <mat-error *ngIf="form.get('title').invalid"
+        >Enter a workout title.</mat-error
+      >
     </mat-form-field>
     <mat-form-field>
       <textarea
         rows="5"
         matInput
         type="text"
-        name="description"
-        required
-        [ngModel]="workout?.description"
+        formControlName="description"
         placeholder="Description of Workout"
-        #description="ngModel"
       ></textarea>
-      <mat-error *ngIf="description.invalid"
+      <mat-error *ngIf="form.get('description').invalid"
         >Enter a description and the details of the workout.</mat-error
       >
     </mat-form-field>
     <mat-form-field>
       <mat-label>Choose a date</mat-label>
-      <input
-        matInput
-        required
-        [matDatepicker]="picker"
-        [value]="date.value"
-        [ngModel]="workout?.dateOfWorkout"
-        name="workoutDate"
-        #workoutDate="ngModel"
-      />
-      <mat-error *ngIf="workoutDate.invalid"
+      <input matInput [matDatepicker]="picker" formControlName="workoutDate" />
+      <mat-error *ngIf="form.get('workoutDate').invalid"
         >Enter the date of the workout.</mat-error
       >
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>

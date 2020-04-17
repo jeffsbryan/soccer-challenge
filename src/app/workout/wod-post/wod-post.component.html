@@ -1,12 +1,10 @@
 <mat-card>
-  <form (submit)="onSaveWodResult(wodForm)" #wodForm="ngForm">
+  <form [formGroup]="form" (submit)="onSaveWodResult()">
     <mat-form-field>
       <input
         matInput
         type="text"
-        name="result"
-        required
-        minlength="1"
+        formNameControl="result"
         placeholder="Enter results"
       />
     </mat-form-field>
@@ -15,7 +13,7 @@
         rows="5"
         matInput
         type="text"
-        name="comment"
+        formNameControl="comment"
         placeholder="Enter comments"
       ></textarea>
     </mat-form-field>
