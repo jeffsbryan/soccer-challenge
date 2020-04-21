@@ -15,6 +15,7 @@ export class WorkoutCreateComponent implements OnInit {
   private workoutId: string;
   form: FormGroup;
   workout: Workout;
+  videoPreview: string;
 
   constructor(
     public workoutService: WorkoutService,
@@ -36,6 +37,7 @@ export class WorkoutCreateComponent implements OnInit {
       workoutDate: new FormControl(tomorrow, {
         validators: [Validators.required],
       }),
+      workoutVideo: new FormControl(null),
     });
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has("workoutId")) {
@@ -49,11 +51,13 @@ export class WorkoutCreateComponent implements OnInit {
               title: workoutData.title,
               description: workoutData.description,
               dateOfWorkout: workoutData.dateOfWorkout,
+              videoUrl: workoutData.videoUrl,
             };
             this.form.setValue({
               title: this.workout.title,
               description: this.workout.description,
               workoutDate: this.workout.dateOfWorkout,
+              workoutVideo: this.workout.videoUrl,
             });
           });
       } else {
@@ -71,17 +75,31 @@ export class WorkoutCreateComponent implements OnInit {
       this.workoutService.addWorkout(
         this.form.value.title,
         this.form.value.description,
-        this.form.value.workoutDate
+        this.form.value.workoutDate,
+        this.form.value.workoutVideo
       );
     } else {
       this.workoutService.updateWorkout(
         this.workoutId,
         this.form.value.title,
         this.form.value.description,
-        this.form.value.workoutDate
+        this.form.value.workoutDate,
+        this.form.value.workoutVideo
       );
     }
-    this.form.reset();
+    //this.form.reset();
   }
-  onFileUploadClick() {}
+  onFileUploadClick(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.form.patchValue({ workoutVideo: file });
+    this.form.get("workoutVideo").updateValueAndValidity();
+
+    console.log(file);
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.videoPreview = file.name;
+    };
+    reader.readAsDataURL(file);
+  }
 }

@@ -7,6 +7,9 @@
     <span style="white-space: pre-wrap;">
       {{ workout?.description }}
     </span>
+    <span *ngIf="workout">
+      <a href="{{ workout?.videoUrl }}">Video</a>
+    </span>
     <p class="info-text mat-body-1" *ngIf="noWorkoutFound">
       No workout created for today!
     </p>

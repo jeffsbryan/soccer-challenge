@@ -2,7 +2,63 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const mongoose = require("mongoose");
+const multer = require("multer");
 const Workout = require("./models/workout");
+const multerS3 = require("multer-s3");
+require("dotenv").config();
+
+// Configure aws s3 SDK (update authentication)
+const AWS = require("aws-sdk");
+AWS.config.update({
+  accessKeyId: process.env.s3AccessKeyId,
+  secretAccessKey: process.env.s3SecretAccessKey,
+});
+const s3 = new AWS.S3();
+
+// Unique name of aws s3 bucket created
+const myBucket = process.env.s3Bucket;
+
+// Multer upload (Use multer-s3 to save directly to AWS instead of locally)
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: myBucket,
+    // Set public read permissions
+    acl: "public-read",
+    // Auto detect contet type
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    // Set key/ filename as original uploaded name
+    key: function (req, file, cb) {
+      var newFileName =
+        Date.now() + "-" + file.originalname.toLowerCase().split(" ").join("-");
+      const ext = MIME_TYPE_MAP[file.mimetype];
+      var fullPath = "vod/" + newFileName + "." + ext;
+      cb(null, fullPath);
+    },
+  }),
+});
+
+const MIME_TYPE_MAP = {
+  "video/x-ms-wmv": "wmv",
+  "video/x-msvideo": "avi",
+  "video/mp4": "mp4",
+};
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const isValid = MIME_TYPE_MAP[file.mimetype];
+    let error = new Error("Invalid MIME type");
+    if (isValid) {
+      error = null;
+    }
+    cb(error, "backend/videos");
+  },
+  filename: (req, file, cb) => {
+    const name = file.originalname.toLowerCase().split(" ").join("-");
+    const ext = MIME_TYPE_MAP[file.mimetype];
+    cb(null, name + "-" + Date.now() + "." + ext);
+  },
+});
 
 mongoose
   .connect(
@@ -31,11 +87,12 @@ app.use((req, res, next) => {
   next();
 });
 
-app.post("/api/workouts", (req, res, next) => {
+app.post("/api/workouts", upload.single("workoutVideo"), (req, res, next) => {
   const workout = new Workout({
     title: req.body.title,
     description: req.body.description,
     dateOfWorkout: req.body.dateOfWorkout,
+    videoUrl: req.file.location,
   });
   workout.save();
 
@@ -67,7 +124,7 @@ app.get("/api/workouts", (req, res, next) => {
 });
 
 app.get("/api/workouts/wod", (req, res, next) => {
-  console.log("Getting workout " + req.query.workoutDate);
+  //console.log("Getting workout " + req.query.workoutDate);
 
   let startOfDay = new Date(req.query.workoutDate);
   startOfDay.setHours(0, 0, 0);
@@ -80,10 +137,8 @@ app.get("/api/workouts/wod", (req, res, next) => {
     .limit(1)
     .then((document) => {
       if (!document.length) {
-        console.log("WOD not found!!");
         res.status(404).json({ message: "Workout not found!" });
       } else {
-        console.log("WOD found!!");
         res.status(200).json(document);
       }
     });

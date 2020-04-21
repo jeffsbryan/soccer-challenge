@@ -8,6 +8,9 @@
         {{ workout.dateOfWorkout }}
       </p>
       <p>{{ workout.description }}</p>
+      <span class="material-icons" *ngIf="workout.videoUrl">
+        videocam
+      </span>
     </span>
     <mat-action-row>
       <a mat-button color="primary" [routerLink]="['/editWorkout', workout.id]"

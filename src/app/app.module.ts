@@ -10,6 +10,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatDividerModule } from "@angular/material/divider";
 import { MatExpansionModule } from "@angular/material";
 import { MatFormFieldModule } from "@angular/material";
 import { MatNativeDateModule } from "@angular/material/core";
@@ -42,6 +43,7 @@ import { WorkoutListComponent } from "./workout/workout-list/workout-list.compon
     MatButtonModule,
     MatCardModule,
     MatDatepickerModule,
+    MatDividerModule,
     MatExpansionModule,
     MatFormFieldModule,
     MatIconModule,

@@ -43,9 +43,12 @@
         <mat-icon>file_upload</mat-icon>
         Upload
       </button>
-      <input type="file" #filePicker />
+      <input type="file" #filePicker (change)="onFileUploadClick($event)" />
     </div>
-
+    <div class="mat-content" *ngIf="videoPreview !== '' && videoPreview">
+      {{ videoPreview }}
+    </div>
+    <mat-divider></mat-divider>
     <button mat-raised-button color="accent" type="submit">Save Workout</button>
   </form>
 </mat-card>

@@ -2,15 +2,15 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Subject } from "rxjs";
 import { map } from "rxjs/operators";
-
 import { Workout } from "./workout.model";
+import { Router } from "@angular/router";
 
 @Injectable({ providedIn: "root" })
 export class WorkoutService {
   private workouts: Workout[] = [];
   private workoutsUpdated = new Subject<Workout[]>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   getWorkouts() {
     this.http
@@ -25,6 +25,7 @@ export class WorkoutService {
               description: workout.description,
               dateOfWorkout: workout.dateOfWorkout,
               id: workout._id,
+              videoUrl: workout.videoUrl,
             };
           });
         })
@@ -53,6 +54,7 @@ export class WorkoutService {
       title: string;
       description: string;
       dateOfWorkout: Date;
+      videoUrl: string;
     }>("http://localhost:3000/api/workouts/" + id);
   }
 
@@ -60,41 +62,66 @@ export class WorkoutService {
     return this.workoutsUpdated.asObservable();
   }
 
-  addWorkout(title: string, description: string, dateOfWorkout: Date) {
-    const workout: Workout = {
-      id: null,
-      title: title,
-      description: description,
-      dateOfWorkout: dateOfWorkout,
-    };
+  addWorkout(
+    title: string,
+    description: string,
+    dateOfWorkout: Date,
+    workoutVideo: File
+  ) {
+    const workoutData = new FormData();
+    workoutData.append("title", title);
+    workoutData.append("description", description);
+    workoutData.append("dateOfWorkout", dateOfWorkout.toUTCString());
+    workoutData.append("workoutVideo", workoutVideo, title);
 
     this.http
       .post<{ message: string; workoutId: string }>(
         "http://localhost:3000/api/workouts",
-        workout
+        workoutData
       )
       .subscribe((responseData) => {
+        const workout: Workout = {
+          id: responseData.workoutId,
+          title: title,
+          description: description,
+          dateOfWorkout: dateOfWorkout,
+          videoUrl: "",
+        };
         const id = responseData.workoutId;
         workout.id = id;
         this.workouts.push(workout);
         this.workoutsUpdated.next([...this.workouts]);
+        this.router.navigate(["/"]);
       });
   }
   updateWorkout(
     id: string,
     title: string,
     description: string,
-    dateOfWorkout: Date
+    dateOfWorkout: Date,
+    video: File | string
   ) {
-    const workout: Workout = {
-      id: id,
-      title: title,
-      description: description,
-      dateOfWorkout: dateOfWorkout,
-    };
+    let workoutData: Workout | FormData;
+    if (typeof video === "object") {
+      console.log("dateOfWorkout " + dateOfWorkout);
+      workoutData = new FormData();
+      workoutData.append("id", id);
+      workoutData.append("title", title);
+      workoutData.append("description", description);
+      //  workoutData.append("dateOfWorkout", dateOfWorkout.toUTCString());
+      workoutData.append("workoutVideo", video, title);
+    } else {
+      workoutData = {
+        id: id,
+        title: title,
+        description: description,
+        dateOfWorkout: dateOfWorkout,
+        videoUrl: video,
+      };
+    }
 
     this.http
-      .put("http://localhost:3000/api/workouts/" + id, workout)
+      .put("http://localhost:3000/api/workouts/" + id, workoutData)
       .subscribe((response) => {
         const updatedWorkouts = [...this.workouts];
         const oldWorkoutIndex = updatedWorkouts.findIndex((p) => p.id === id);
@@ -103,10 +130,12 @@ export class WorkoutService {
           title: title,
           description: description,
           dateOfWorkout: dateOfWorkout,
+          videoUrl: "",
         };
         updatedWorkouts[oldWorkoutIndex] = workout;
         this.workouts = updatedWorkouts;
         this.workoutsUpdated.next([...this.workouts]);
+        this.router.navigate(["/"]);
       });
   }
 
