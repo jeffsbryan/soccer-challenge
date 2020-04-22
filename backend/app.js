@@ -4,6 +4,7 @@ const app = express();
 const mongoose = require("mongoose");
 const multer = require("multer");
 const Workout = require("./models/workout");
+const Wod = require("./models/wod");
 const multerS3 = require("multer-s3");
 require("dotenv").config();
 
@@ -145,6 +146,8 @@ app.get("/api/workouts/wod", (req, res, next) => {
 });
 
 app.post("/api/wod", (req, res, next) => {
+  console.log("Logging WOD Result");
+
   const wod = new Wod({
     result: req.body.result,
     comment: req.body.comment,
@@ -152,6 +155,7 @@ app.post("/api/wod", (req, res, next) => {
     workoutId: req.body.workoutId,
   });
   console.log(wod);
+
   wod.save();
 
   res.status(201).json({

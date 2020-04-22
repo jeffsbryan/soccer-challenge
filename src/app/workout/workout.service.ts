@@ -168,6 +168,10 @@ export class WorkoutService {
       userName: userName,
     };
 
-    this.http.post("http://localhost:3000/api/wod/", wodResult);
+    this.http
+      .post("http://localhost:3000/api/wod/", wodResult)
+      .subscribe((responseData) => {
+        console.log(responseData);
+      });
   }
 }

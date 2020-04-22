@@ -20,14 +20,11 @@ export class WodPostComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      userName: new FormControl(
-        { value: "Player A", disabled: true },
-        {
-          validators: [Validators.required],
-        }
-      ),
+      userName: new FormControl("Player A", {
+        validators: [Validators.required],
+      }),
       result: new FormControl(null, {
-        validators: [Validators.required, Validators.minLength(3)],
+        validators: [Validators.required, Validators.minLength(1)],
       }),
       comment: new FormControl(null),
     });
@@ -47,6 +44,6 @@ export class WodPostComponent implements OnInit {
       this.form.value.comment,
       this.form.value.userName
     );
-    this.form.reset();
+    //this.form.reset();
   }
 }
