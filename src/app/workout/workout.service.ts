@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { Subject } from "rxjs";
 import { map } from "rxjs/operators";
 import { Workout } from "./workout.model";
+import { WodResult } from "./wodresult.model";
 import { Router } from "@angular/router";
 
 @Injectable({ providedIn: "root" })
@@ -159,13 +160,14 @@ export class WorkoutService {
     userName: string
   ) {
     console.log("Logging WOD Result for user" + userName);
-    wodData = {
+    const wodResult: WodResult = {
+      id: null,
       workoutId: workoutId,
       result: result,
       comment: comment,
       userName: userName,
     };
 
-    this.http.post("http://localhost:3000/api/wod/", wodData);
+    this.http.post("http://localhost:3000/api/wod/", wodResult);
   }
 }
