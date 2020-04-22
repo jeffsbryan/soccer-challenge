@@ -18,6 +18,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatVideoModule } from "mat-video";
 import { WodComponent } from "./workout/wod/wod.component";
 import { WodPostComponent } from "./workout/wod-post/wod-post.component";
 import { WodListComponent } from "./workout/wod-list/wod-list.component";
@@ -51,6 +52,7 @@ import { WorkoutListComponent } from "./workout/workout-list/workout-list.compon
     MatNativeDateModule,
     MatProgressBarModule,
     MatToolbarModule,
+    MatVideoModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

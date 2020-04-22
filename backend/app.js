@@ -144,6 +144,21 @@ app.get("/api/workouts/wod", (req, res, next) => {
     });
 });
 
+app.post("/api/wod", (req, res, next) => {
+  const wod = new Wod({
+    result: req.body.result,
+    comment: req.body.comment,
+    userName: req.body.userName,
+    workoutId: req.body.workoutId,
+  });
+  console.log(wod);
+  wod.save();
+
+  res.status(201).json({
+    message: "Wod result saved successfully",
+  });
+});
+
 app.get("/api/workouts/:id", (req, res, next) => {
   Workout.findById(req.params.id).then((document) => {
     if (document) {

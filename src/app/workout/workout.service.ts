@@ -151,4 +151,21 @@ export class WorkoutService {
         this.workoutsUpdated.next([...this.workouts]);
       });
   }
+
+  addWodResult(
+    workoutId: string,
+    result: string,
+    comment: string,
+    userName: string
+  ) {
+    console.log("Logging WOD Result for user" + userName);
+    wodData = {
+      workoutId: workoutId,
+      result: result,
+      comment: comment,
+      userName: userName,
+    };
+
+    this.http.post("http://localhost:3000/api/wod/", wodData);
+  }
 }

@@ -4,16 +4,27 @@
       <input
         matInput
         type="text"
-        formNameControl="result"
-        placeholder="Enter results"
+        formControlName="userName"
+        placeholder="User name"
       />
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        formControlName="result"
+        placeholder="Enter workout time"
+      />
+      <mat-error *ngIf="form.get('result').invalid"
+        >Enter a workout time</mat-error
+      >
     </mat-form-field>
     <mat-form-field>
       <textarea
         rows="5"
         matInput
         type="text"
-        formNameControl="comment"
+        formControlName="comment"
         placeholder="Enter comments"
       ></textarea>
     </mat-form-field>
