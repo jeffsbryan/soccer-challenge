@@ -59,6 +59,7 @@ export class WorkoutCreateComponent implements OnInit {
               workoutDate: this.workout.dateOfWorkout,
               workoutVideo: this.workout.videoUrl,
             });
+            this.videoPreview = this.workout.videoUrl;
           });
       } else {
         this.mode = "create";

@@ -102,18 +102,29 @@ app.post("/api/workouts", upload.single("workoutVideo"), (req, res, next) => {
   });
 });
 
-app.put("/api/workouts/:id", (req, res, next) => {
-  const workout = new Workout({
-    _id: req.body.id,
-    title: req.body.title,
-    description: req.body.description,
-    dateOfWorkout: req.body.dateOfWorkout,
-  });
-  console.log(workout);
-  Workout.updateOne({ _id: req.params.id }, workout).then((result) => {
-    res.status(200).json({ message: "Update successful!" });
-  });
-});
+app.put(
+  "/api/workouts/:id",
+  upload.single("workoutVideo"),
+  (req, res, next) => {
+    let videoUrl = req.body.videoUrl;
+    if (req.file) {
+      videoUrl = req.file.location;
+    }
+
+    const workout = new Workout({
+      _id: req.body.id,
+      title: req.body.title,
+      description: req.body.description,
+      dateOfWorkout: req.body.dateOfWorkout,
+      videoUrl: videoUrl,
+    });
+
+    console.log(workout);
+    Workout.updateOne({ _id: req.params.id }, workout).then((result) => {
+      res.status(200).json({ message: "Update successful!" });
+    });
+  }
+);
 
 app.get("/api/workouts", (req, res, next) => {
   Workout.find().then((documents) => {

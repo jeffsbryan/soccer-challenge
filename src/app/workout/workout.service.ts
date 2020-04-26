@@ -109,9 +109,10 @@ export class WorkoutService {
       workoutData.append("id", id);
       workoutData.append("title", title);
       workoutData.append("description", description);
-      //  workoutData.append("dateOfWorkout", dateOfWorkout.toUTCString());
+      //workoutData.append("dateOfWorkout", dateOfWorkout.toUTCString());
       workoutData.append("workoutVideo", video, title);
     } else {
+      console.log("video is not object!");
       workoutData = {
         id: id,
         title: title,
