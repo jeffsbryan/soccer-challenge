@@ -70,13 +70,26 @@ export class WorkoutService {
     title: string,
     description: string,
     dateOfWorkout: Date,
-    workoutVideo: File
+    workoutVideo: File | string
   ) {
-    const workoutData = new FormData();
-    workoutData.append("title", title);
-    workoutData.append("description", description);
-    workoutData.append("dateOfWorkout", dateOfWorkout.toUTCString());
-    workoutData.append("workoutVideo", workoutVideo, title);
+    let workoutData: Workout | FormData;
+    //console.dir(workoutVideo);
+    if (workoutVideo) {
+      workoutData = new FormData();
+      workoutData.append("title", title);
+      workoutData.append("description", description);
+      workoutData.append("dateOfWorkout", dateOfWorkout.toUTCString());
+      workoutData.append("workoutVideo", workoutVideo, title);
+    } else {
+      workoutData = {
+        id: null,
+        title: title,
+        description: description,
+        dateOfWorkout: dateOfWorkout,
+        videoUrl: null,
+        results: null,
+      };
+    }
 
     this.http
       .post<{ message: string; workoutId: string }>(
@@ -108,7 +121,6 @@ export class WorkoutService {
   ) {
     let workoutData: Workout | FormData;
     if (typeof video === "object") {
-      console.log("dateOfWorkout " + dateOfWorkout);
       workoutData = new FormData();
       workoutData.append("id", id);
       workoutData.append("title", title);
@@ -116,7 +128,6 @@ export class WorkoutService {
       //workoutData.append("dateOfWorkout", dateOfWorkout.toUTCString());
       workoutData.append("workoutVideo", video, title);
     } else {
-      console.log("video is not object!");
       workoutData = {
         id: id,
         title: title,

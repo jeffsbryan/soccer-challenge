@@ -44,12 +44,18 @@ const MIME_TYPE_MAP = {
 };
 
 router.post("", upload.single("workoutVideo"), (req, res, next) => {
+  let videoUrl = req.body.videoUrl;
+  if (req.file) {
+    videoUrl = req.file.location;
+  }
+
   const workout = new Workout({
     title: req.body.title,
     description: req.body.description,
     dateOfWorkout: req.body.dateOfWorkout,
-    videoUrl: req.file.location,
+    videoUrl: videoUrl,
   });
+
   workout.save();
 
   res.status(201).json({
@@ -71,7 +77,7 @@ router.put("/:id", upload.single("workoutVideo"), (req, res, next) => {
     videoUrl: videoUrl,
   });
 
-  console.log(workout);
+  //console.log(workout);
   Workout.updateOne({ _id: req.params.id }, workout).then((result) => {
     res.status(200).json({ message: "Update successful!" });
   });

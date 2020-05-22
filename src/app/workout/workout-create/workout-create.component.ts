@@ -102,7 +102,7 @@ export class WorkoutCreateComponent implements OnInit {
     this.form.patchValue({ workoutVideo: file });
     this.form.get("workoutVideo").updateValueAndValidity();
 
-    console.log(file);
+    //console.log(file);
 
     const reader = new FileReader();
     reader.onload = () => {
