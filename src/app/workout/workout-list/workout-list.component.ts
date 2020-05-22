@@ -11,15 +11,18 @@ import { WorkoutService } from "../workout.service";
 })
 export class WorkoutListComponent implements OnInit {
   workouts: Workout[] = [];
+  isLoading = false;
   private workoutSub: Subscription;
 
   constructor(public workoutService: WorkoutService) {}
 
   ngOnInit() {
+    this.isLoading = true;
     this.workoutService.getWorkouts();
     this.workoutSub = this.workoutService
       .getWorkoutUpdateListener()
       .subscribe((workouts: Workout[]) => {
+        this.isLoading = false;
         this.workouts = workouts;
       });
   }

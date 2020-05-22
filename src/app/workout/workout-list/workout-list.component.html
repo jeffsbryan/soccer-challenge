@@ -1,4 +1,5 @@
-<mat-accordion multi="true" *ngIf="workouts.length > 0">
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<mat-accordion multi="true" *ngIf="workouts.length > 0 && !isLoading">
   <mat-expansion-panel *ngFor="let workout of workouts">
     <mat-expansion-panel-header>
       {{ workout.title }}
@@ -22,6 +23,6 @@
     </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
-<p class="info-text mat-body-1" *ngIf="workouts.length <= 0">
+<p class="info-text mat-body-1" *ngIf="workouts.length <= 0 && !isLoading">
   No workouts added yet!
 </p>

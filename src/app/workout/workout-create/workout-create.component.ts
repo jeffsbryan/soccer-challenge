@@ -16,6 +16,7 @@ export class WorkoutCreateComponent implements OnInit {
   form: FormGroup;
   workout: Workout;
   videoPreview: string;
+  isLoading = false;
 
   constructor(
     public workoutService: WorkoutService,
@@ -26,6 +27,7 @@ export class WorkoutCreateComponent implements OnInit {
     const tomorrow = new Date();
     tomorrow.setDate(new Date().getDate() + 1);
     tomorrow.setHours(0, 0, 0);
+    this.isLoading = true;
 
     this.form = new FormGroup({
       title: new FormControl(null, {
@@ -61,8 +63,10 @@ export class WorkoutCreateComponent implements OnInit {
               workoutVideo: this.workout.videoUrl,
             });
             this.videoPreview = this.workout.videoUrl;
+            this.isLoading = false;
           });
       } else {
+        this.isLoading = false;
         this.mode = "create";
         this.workoutId = null;
       }
@@ -73,6 +77,8 @@ export class WorkoutCreateComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
+    this.isLoading = true;
+
     if (this.mode === "create") {
       this.workoutService.addWorkout(
         this.form.value.title,

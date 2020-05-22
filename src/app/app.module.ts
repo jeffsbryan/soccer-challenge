@@ -17,6 +17,7 @@ import { MatNativeDateModule } from "@angular/material/core";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatProgressSpinnerModule } from "@angular/material";
 import { MatTableModule } from "@angular/material";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatVideoModule } from "mat-video";
@@ -52,6 +53,7 @@ import { WorkoutListComponent } from "./workout/workout-list/workout-list.compon
     MatInputModule,
     MatNativeDateModule,
     MatProgressBarModule,
+    MatProgressSpinnerModule,
     MatTableModule,
     MatToolbarModule,
     MatVideoModule,
