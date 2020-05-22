@@ -52,6 +52,7 @@ export class WorkoutCreateComponent implements OnInit {
               description: workoutData.description,
               dateOfWorkout: workoutData.dateOfWorkout,
               videoUrl: workoutData.videoUrl,
+              results: null,
             };
             this.form.setValue({
               title: this.workout.title,

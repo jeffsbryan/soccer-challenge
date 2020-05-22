@@ -22,6 +22,7 @@ export class WodComponent implements OnInit {
           description: workoutData[0].description,
           dateOfWorkout: workoutData[0].dateOfWorkout,
           videoUrl: workoutData[0].videoUrl,
+          results: null,
         };
       },
       (error) => {

@@ -27,11 +27,14 @@ export class WorkoutService {
               dateOfWorkout: workout.dateOfWorkout,
               id: workout._id,
               videoUrl: workout.videoUrl,
+              results: workout.results,
             };
           });
         })
       )
       .subscribe((transformedWorkouts) => {
+        console.dir(transformedWorkouts);
+
         this.workouts = transformedWorkouts;
         this.workoutsUpdated.next([...this.workouts]);
       });
@@ -87,6 +90,7 @@ export class WorkoutService {
           description: description,
           dateOfWorkout: dateOfWorkout,
           videoUrl: "",
+          results: null,
         };
         const id = responseData.workoutId;
         workout.id = id;
@@ -119,6 +123,7 @@ export class WorkoutService {
         description: description,
         dateOfWorkout: dateOfWorkout,
         videoUrl: video,
+        results: null,
       };
     }
 
@@ -133,6 +138,7 @@ export class WorkoutService {
           description: description,
           dateOfWorkout: dateOfWorkout,
           videoUrl: "",
+          results: null,
         };
         updatedWorkouts[oldWorkoutIndex] = workout;
         this.workouts = updatedWorkouts;
@@ -170,7 +176,7 @@ export class WorkoutService {
     };
 
     this.http
-      .post("http://localhost:3000/api/wod/", wodResult)
+      .post("http://localhost:3000/api/wods/", wodResult)
       .subscribe((responseData) => {
         console.log(responseData);
       });
