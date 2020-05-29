@@ -17,6 +17,8 @@ export class WorkoutService {
   constructor(private http: HttpClient, private router: Router) {}
 
   getWorkouts() {
+    console.log(BACKEND_URL);
+
     this.http
       .get<{ message: string; workouts: any }>(BACKEND_URL)
       .pipe(
