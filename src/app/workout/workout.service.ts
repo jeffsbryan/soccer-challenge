@@ -5,6 +5,7 @@ import { map } from "rxjs/operators";
 import { Workout } from "./workout.model";
 import { WodResult } from "./wodresult.model";
 import { Router } from "@angular/router";
+import { environment } from "../../environments/environment";
 
 const BACKEND_URL = environment.apiUrl + "/workouts/";
 
