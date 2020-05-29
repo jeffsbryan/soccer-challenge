@@ -6,6 +6,8 @@ import { Workout } from "./workout.model";
 import { WodResult } from "./wodresult.model";
 import { Router } from "@angular/router";
 
+const BACKEND_URL = environment.apiUrl + "/workouts/";
+
 @Injectable({ providedIn: "root" })
 export class WorkoutService {
   private workouts: Workout[] = [];
@@ -15,9 +17,7 @@ export class WorkoutService {
 
   getWorkouts() {
     this.http
-      .get<{ message: string; workouts: any }>(
-        "http://localhost:3000/api/workouts"
-      )
+      .get<{ message: string; workouts: any }>(BACKEND_URL)
       .pipe(
         map((workoutData) => {
           return workoutData.workouts.map((workout) => {
@@ -50,7 +50,7 @@ export class WorkoutService {
       title: string;
       description: string;
       dateOfWorkout: Date;
-    }>("http://localhost:3000/api/workouts/wod", { params: params });
+    }>(BACKEND_URL + "wod", { params: params });
   }
   getWorkout(id: string) {
     return this.http.get<{
@@ -59,7 +59,7 @@ export class WorkoutService {
       description: string;
       dateOfWorkout: Date;
       videoUrl: string;
-    }>("http://localhost:3000/api/workouts/" + id);
+    }>(BACKEND_URL + id);
   }
 
   getWorkoutUpdateListener() {
@@ -92,10 +92,7 @@ export class WorkoutService {
     }
 
     this.http
-      .post<{ message: string; workoutId: string }>(
-        "http://localhost:3000/api/workouts",
-        workoutData
-      )
+      .post<{ message: string; workoutId: string }>(BACKEND_URL, workoutData)
       .subscribe((responseData) => {
         const workout: Workout = {
           id: responseData.workoutId,
@@ -138,37 +135,33 @@ export class WorkoutService {
       };
     }
 
-    this.http
-      .put("http://localhost:3000/api/workouts/" + id, workoutData)
-      .subscribe((response) => {
-        const updatedWorkouts = [...this.workouts];
-        const oldWorkoutIndex = updatedWorkouts.findIndex((p) => p.id === id);
-        const workout: Workout = {
-          id: id,
-          title: title,
-          description: description,
-          dateOfWorkout: dateOfWorkout,
-          videoUrl: "",
-          results: null,
-        };
-        updatedWorkouts[oldWorkoutIndex] = workout;
-        this.workouts = updatedWorkouts;
-        this.workoutsUpdated.next([...this.workouts]);
-        this.router.navigate(["/"]);
-      });
+    this.http.put(BACKEND_URL + id, workoutData).subscribe((response) => {
+      const updatedWorkouts = [...this.workouts];
+      const oldWorkoutIndex = updatedWorkouts.findIndex((p) => p.id === id);
+      const workout: Workout = {
+        id: id,
+        title: title,
+        description: description,
+        dateOfWorkout: dateOfWorkout,
+        videoUrl: "",
+        results: null,
+      };
+      updatedWorkouts[oldWorkoutIndex] = workout;
+      this.workouts = updatedWorkouts;
+      this.workoutsUpdated.next([...this.workouts]);
+      this.router.navigate(["/"]);
+    });
   }
 
   deleteWorkout(workoutId: string) {
     console.log("removing workout with id " + workoutId);
-    this.http
-      .delete("http://localhost:3000/api/workouts/" + workoutId)
-      .subscribe(() => {
-        const updatedWorkouts = this.workouts.filter(
-          (workout) => workout.id !== workoutId
-        );
-        this.workouts = updatedWorkouts;
-        this.workoutsUpdated.next([...this.workouts]);
-      });
+    this.http.delete(BACKEND_URL + workoutId).subscribe(() => {
+      const updatedWorkouts = this.workouts.filter(
+        (workout) => workout.id !== workoutId
+      );
+      this.workouts = updatedWorkouts;
+      this.workoutsUpdated.next([...this.workouts]);
+    });
   }
 
   addWodResult(
@@ -187,7 +180,7 @@ export class WorkoutService {
     };
 
     this.http
-      .post("http://localhost:3000/api/wods/", wodResult)
+      .post(environment.apiUrl + "/wods/", wodResult)
       .subscribe((responseData) => {
         console.log(responseData);
       });

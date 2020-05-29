@@ -122,24 +122,6 @@ router.get("/wod", (req, res, next) => {
     });
 });
 
-router.get("/results", (req, res, next) => {
-  Workout.aggregate([
-    {
-      $lookup: {
-        from: "wods",
-        localField: "_id",
-        foreignField: "workoutId",
-        as: "results",
-      },
-    },
-  ]).then((documents) => {
-    res.status(200).json({
-      message: "Results fetched successfully.",
-      workouts: documents,
-    });
-  });
-});
-
 router.get("/:id", (req, res, next) => {
   Workout.findById(req.params.id).then((document) => {
     if (document) {
